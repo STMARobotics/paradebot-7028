@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.subsystems.CannonSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -24,8 +26,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
-
+  private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
+  private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -33,6 +36,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
   }
 
   /**
