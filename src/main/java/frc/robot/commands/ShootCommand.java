@@ -9,6 +9,8 @@ public class ShootCommand extends CommandBase {
     
     public ShootCommand(CannonSubsystem cannonSubsystem) {
         this.cannonSubsystem = cannonSubsystem;
+
+        addRequirements(cannonSubsystem);
     }
 
     @Override

@@ -21,7 +21,7 @@ public final class Constants {
     public static final class CannonConstants {
         public static final int DEVICE_ID_CANNON_VALVE = 0;
 
-        public static final double VALVE_OPEN_TIME = 1;
+        public static final double VALVE_OPEN_TIME = 1.0;
     }
 
 }
