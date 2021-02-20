@@ -13,5 +13,14 @@
     "**/.settings": true,
     "**/.factorypath": true,
     "**/*~": true
-  }
+  },
+  "editor.rulers": [
+    120
+  ],
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.detectIndentation": false
 }
