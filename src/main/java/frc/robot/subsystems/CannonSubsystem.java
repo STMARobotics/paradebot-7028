@@ -4,7 +4,6 @@ import static frc.robot.Constants.CannonConstants.DEVICE_ID_CANNON_VALVE;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class CannonSubsystem extends SubsystemBase {
 
