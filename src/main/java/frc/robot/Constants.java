@@ -26,9 +26,10 @@ public final class Constants {
 
     public static final class DriveTrainConstants {
         
-        public static final int DEVICE_ID_LEFT_MASTER = 0;
-        public static final int DEVICE_ID_LEFT_SLAVE = 1;
-        public static final int DEVICE_ID_RIGHT_MASTER = 2;
-        public static final int DEVICE_ID_RIGHT_SLAVE = 3;
+        public static final int DEVICE_ID_LEFT_LEADER = 0;
+        public static final int DEVICE_ID_LEFT_FOLLOWER = 1;
+        public static final int DEVICE_ID_RIGHT_LEADER = 2;
+        public static final int DEVICE_ID_RIGHT_FOLLOWER = 3;
+        
     }
 }
