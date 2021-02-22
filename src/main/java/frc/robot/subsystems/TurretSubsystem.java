@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -13,7 +16,9 @@ public class TurretSubsystem extends SubsystemBase {
   PigeonIMU pigeon = new PigeonIMU(turret);
 
   public TurretSubsystem() {
-
+    turret.configFactoryDefault();
+    turret.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0);
+    turret.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 0);
   }
 
   @Override
@@ -22,4 +27,19 @@ public class TurretSubsystem extends SubsystemBase {
     pigeon.getYawPitchRoll(ypr);
     SmartDashboard.putNumber("Yaw", ypr[0]);
   }
+
+  public double getPosition() {
+    double[] position = new double[3];
+    pigeon.getYawPitchRoll(position);
+    return position[0];
+  }
+
+  public void setPosition(double position) {
+    turret.set(ControlMode.Position, position);    
+  }
+
+  public void stop() {
+    turret.set(ControlMode.PercentOutput, 0);
+  }
+
 }
