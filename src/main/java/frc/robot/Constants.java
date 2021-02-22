@@ -28,4 +28,12 @@ public final class Constants {
         public static final double PRESSURE_REGULATOR_KP = 0.001;
     }
 
+    public static final class DriveTrainConstants {
+        
+        public static final int DEVICE_ID_LEFT_LEADER = 0;
+        public static final int DEVICE_ID_LEFT_FOLLOWER = 1;
+        public static final int DEVICE_ID_RIGHT_LEADER = 2;
+        public static final int DEVICE_ID_RIGHT_FOLLOWER = 3;
+        
+    }
 }
