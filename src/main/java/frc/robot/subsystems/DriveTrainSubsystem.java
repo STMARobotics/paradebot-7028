@@ -17,17 +17,23 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private DifferentialDrive differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
 
   public DriveTrainSubsystem() {
-    leftLeader.setInverted(true);
-    rightLeader.setInverted(true);
-    leftFollower.setInverted(true);
-    rightFollower.setInverted(true);
-    leftFollower.follow(leftLeader);
-    rightFollower.follow(rightLeader);
+    leftLeader.configFactoryDefault();
+    leftFollower.configFactoryDefault();
+    rightLeader.configFactoryDefault();
+    rightFollower.configFactoryDefault();
 
+    leftLeader.setInverted(true);
+    leftFollower.setInverted(true);
+    rightLeader.setInverted(true);
+    rightFollower.setInverted(true);
+    
     leftLeader.setNeutralMode(NeutralMode.Brake);
     leftFollower.setNeutralMode(NeutralMode.Brake);
     rightLeader.setNeutralMode(NeutralMode.Brake);
     rightFollower.setNeutralMode(NeutralMode.Brake);
+
+    leftFollower.follow(leftLeader);
+    rightFollower.follow(rightLeader);
   }
 
   public void drive(double speed, double rotation) {
