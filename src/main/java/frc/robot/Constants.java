@@ -20,8 +20,12 @@ public final class Constants {
 
     public static final class CannonConstants {
         public static final int DEVICE_ID_CANNON_VALVE = 0;
+        public static final int DEVICE_ID_PRESSURE_REGULATOR = 4;
+        public static final int DEVICE_ID_PRESSURE_SENSOR = 0;
 
         public static final double VALVE_OPEN_TIME = 1.0;
+
+        public static final double PRESSURE_REGULATOR_KP = 0.001;
     }
 
 }
