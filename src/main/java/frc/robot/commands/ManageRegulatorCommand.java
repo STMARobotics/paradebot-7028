@@ -27,7 +27,7 @@ public class ManageRegulatorCommand extends CommandBase {
   @Override
   public void execute() {
     cannonSubsystem.setPressureRegulatorPosition(
-      ((PRESSURE_REGULATOR_MAX - PRESSURE_REGULATOR_MIN) / 2) * (1 + joystick.getZ()));
+      ((PRESSURE_REGULATOR_MAX + PRESSURE_REGULATOR_MIN) / 2) * (1 + joystick.getZ()));
   }
 
   @Override

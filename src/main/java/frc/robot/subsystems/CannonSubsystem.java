@@ -26,6 +26,9 @@ public class CannonSubsystem extends SubsystemBase {
 
     talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
     talonConfig.slot0.kP = PRESSURE_REGULATOR_KP;
+
+    pressureRegulator.configFactoryDefault();
+    pressureRegulator.configAllSettings(talonConfig);
   }
 
   public void openValve() {

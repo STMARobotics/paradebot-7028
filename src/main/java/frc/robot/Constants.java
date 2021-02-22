@@ -27,7 +27,7 @@ public final class Constants {
 
         // regulator max and min aren't tuned
         public static final int PRESSURE_REGULATOR_MIN = 0;
-        public static final int PRESSURE_REGULATOR_MAX = 4096;
+        public static final int PRESSURE_REGULATOR_MAX = 69632;
         public static final double PRESSURE_REGULATOR_KP = 0.001;
     }
 
