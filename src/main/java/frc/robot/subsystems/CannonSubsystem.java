@@ -36,7 +36,7 @@ public class CannonSubsystem extends SubsystemBase {
     valve.set(0);
   }
 
-  public void setPressureRegulatorPosition(int target) {
+  public void setPressureRegulatorPosition(double target) {
     pressureRegulator.set(ControlMode.Position, target);
   }
 
