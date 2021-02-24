@@ -16,6 +16,7 @@ public final class Constants {
 
     public static final class ControllerConstants {
         public static final int DEVICE_ID_DRIVER_CONTROLLER = 0;
+        public static final int DEVICE_ID_JOYSTICK = 1;
     }
 
     public static final class CannonConstants {
