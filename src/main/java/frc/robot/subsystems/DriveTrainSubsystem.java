@@ -24,6 +24,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
 
+    leftLeader.configFactoryDefault();
+    leftFollower.configFactoryDefault();
+    rightLeader.configFactoryDefault();
+    rightFollower.configFactoryDefault();
     leftLeader.setNeutralMode(NeutralMode.Brake);
     leftFollower.setNeutralMode(NeutralMode.Brake);
     rightLeader.setNeutralMode(NeutralMode.Brake);

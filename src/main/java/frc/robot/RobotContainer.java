@@ -10,6 +10,7 @@ import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLE
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ManageRegulatorCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.subsystems.CannonSubsystem;
@@ -37,6 +38,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
+    cannonSubsystem.setDefaultCommand(new ManageRegulatorCommand(cannonSubsystem, driverController));
   }
 
   /**
