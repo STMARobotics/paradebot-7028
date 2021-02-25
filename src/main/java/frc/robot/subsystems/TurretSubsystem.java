@@ -38,6 +38,10 @@ public class TurretSubsystem extends SubsystemBase {
     turret.set(ControlMode.Position, position);    
   }
 
+  public void rotate(double speed) {
+    turret.set(speed);
+  }
+
   public void stop() {
     turret.set(ControlMode.PercentOutput, 0);
   }
