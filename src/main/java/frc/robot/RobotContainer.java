@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.ToggleAudio;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
@@ -48,6 +49,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+    new JoystickButton(driverController, XboxController.Button.kX.value).toggleWhenPressed(new ToggleAudio(), true);
   }
 
 }
