@@ -37,7 +37,11 @@ public final class Constants {
         public static final int DEVICE_ID_LEFT_LEADER = 0;
         public static final int DEVICE_ID_LEFT_FOLLOWER = 1;
         public static final int DEVICE_ID_RIGHT_LEADER = 2;
-        public static final int DEVICE_ID_RIGHT_FOLLOWER = 3;
-        
+        public static final int DEVICE_ID_RIGHT_FOLLOWER = 3; 
+    }
+
+    public static final class TurretConstants {
+
+      public static final int DEVICE_ID_TURRET = 5;
     }
 }

@@ -20,9 +20,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManageRegulatorCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,7 +40,9 @@ public class RobotContainer {
   private final Joystick joystick = new Joystick(DEVICE_ID_JOYSTICK);
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
+  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
+  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -54,6 +58,7 @@ public class RobotContainer {
         EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
+    turretSubsystem.setDefaultCommand(teleOpTurretCommand);
   }
 
   private void handleRegulatorPositionModeEntry(EntryNotification notification) {
