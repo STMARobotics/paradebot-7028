@@ -8,13 +8,19 @@ import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_JOYSTICK;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.EntryNotification;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManageRegulatorCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
@@ -40,8 +46,26 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    var regulatorPositionModeEntry = Shuffleboard.getTab("SmartDashboard")
+        .addPersistent("Regulator Position Mode", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    scheduleRegulatorModeCommand(regulatorPositionModeEntry);
+    regulatorPositionModeEntry.addListener(this::handleRegulatorPositionModeEntry,
+        EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
-    cannonSubsystem.setDefaultCommand(new ManageRegulatorCommand(cannonSubsystem, joystick));
+  }
+
+  private void handleRegulatorPositionModeEntry(EntryNotification notification) {
+    scheduleRegulatorModeCommand(notification.getEntry());
+  }
+
+  private void scheduleRegulatorModeCommand(NetworkTableEntry entry) {
+    if (entry.getBoolean(true)) {
+      new ManageRegulatorCommand(cannonSubsystem, joystick).schedule();
+    } else {
+      new TeleopRegulatorCommand(cannonSubsystem, driverController).schedule();
+    }
   }
 
   /**

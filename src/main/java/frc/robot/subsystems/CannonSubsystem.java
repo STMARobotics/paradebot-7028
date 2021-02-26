@@ -43,6 +43,10 @@ public class CannonSubsystem extends SubsystemBase {
     pressureRegulator.set(ControlMode.Position, target);
   }
 
+  public void setPressureRegulatorPower(double power) {
+    pressureRegulator.set(ControlMode.PercentOutput, power);
+  }
+
   public double getPressure() {
     return (250 * (pressureSensor.getVoltage() / 5) - 25);
   }
