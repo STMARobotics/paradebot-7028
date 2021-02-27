@@ -7,12 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CannonSubsystem extends SubsystemBase {
 
-    private final Spark valve = new Spark(DEVICE_ID_CANNON_VALVE);
+  private final Spark valve = new Spark(DEVICE_ID_CANNON_VALVE);
     
-    public CannonSubsystem() {
-
-    }
-
     public void openValve() {
         valve.set(1);
     }
