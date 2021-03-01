@@ -32,10 +32,10 @@ public class TeleOpDriveCommand extends CommandBase {
     @Override
     public void execute() {
         driveTrainSubsystem.drive(-xboxController.getY(Hand.kLeft), xboxController.getX(Hand.kRight));
-        if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.7){
+        if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.6 || Math.abs(xboxController.getX(Hand.kRight)) > 0.5){
           playAudio("fast");
         }
-        else if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.25){
+        else if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.25 || Math.abs(xboxController.getX(Hand.kRight)) > 0.25){
           playAudio("slow");
         }
         else {
