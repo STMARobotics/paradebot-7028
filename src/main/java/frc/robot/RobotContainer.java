@@ -15,6 +15,7 @@ import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.NerdShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -31,6 +32,8 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
+  private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooters.LEFT);
+  private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooters.RIGHT);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
 

@@ -36,4 +36,13 @@ public final class Constants {
     public static final int DEVICE_ID_CANNON_ACTUATOR = 0;
     public static final int DEVICE_ID_TURRET = 5;
   }
+
+  public static final class NerdShooterConstants {
+    public static final int DEVICE_ID_LEFT_FLYWHEEL = 6;
+    public static final int DEVICE_ID_LEFT_PUSHER = 2;
+
+    public static final int DEVICE_ID_RIGHT_FLYWHEEL = 7;
+    public static final int DEVICE_ID_RIGHT_PUSHER = 4;
+  }
+
 }
