@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_CANNON_ACTUATOR;
+import static frc.robot.Constants.TurretConstants.DEVICE_ID_PIGEON;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_TURRET;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -16,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class TurretSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX turret = new WPI_TalonSRX(DEVICE_ID_TURRET);
-  private final PigeonIMU pigeon = new PigeonIMU(turret);
+  private final PigeonIMU pigeon = new PigeonIMU(DEVICE_ID_PIGEON);
   private final Servo actuator = new Servo(DEVICE_ID_CANNON_ACTUATOR);
 
   public TurretSubsystem() {

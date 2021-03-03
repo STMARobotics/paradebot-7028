@@ -35,5 +35,6 @@ public final class Constants {
   public static final class TurretConstants {
     public static final int DEVICE_ID_CANNON_ACTUATOR = 0;
     public static final int DEVICE_ID_TURRET = 5;
+    public static final int DEVICE_ID_PIGEON = 7;
   }
 }
