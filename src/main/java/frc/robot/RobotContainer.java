@@ -10,7 +10,7 @@ import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLE
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.SemiAutoNerdShooterCommand;
+import frc.robot.commands.NerdShootCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
@@ -35,6 +35,7 @@ public class RobotContainer {
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooters.LEFT);
   private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooters.RIGHT);
+  private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
 
@@ -55,7 +56,10 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(driverController, XboxController.Button.kB.value).toggleWhenPressed(new SemiAutoNerdShooterCommand(leftNerdShooterSubsystem, driverController));
+    // whileHeld for Full Auto
+    // whenPressed for Semi Auto
+    new JoystickButton(driverController, XboxController.Button.kB.value)
+      .whenPressed(() -> nerdShootCommand.schedule());
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
