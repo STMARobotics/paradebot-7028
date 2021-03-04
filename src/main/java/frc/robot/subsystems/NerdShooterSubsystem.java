@@ -29,14 +29,6 @@ public class NerdShooterSubsystem extends SubsystemBase {
     targetOut = false;
   }
 
-  public boolean isPusherAtMax() {
-    return pusher.get() == 1.2;
-  }
-
-  public boolean isPusherAtMin() {
-    return pusher.get() == 1.0;
-  }
-
   public boolean isTargetOut() {
     return targetOut;
   }

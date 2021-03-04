@@ -43,6 +43,8 @@ public final class Constants {
 
     public static final int DEVICE_ID_RIGHT_FLYWHEEL = 7;
     public static final int DEVICE_ID_RIGHT_PUSHER = 4;
+
+    public static final double PUSHER_CYCLE_TIME = 2.0;
   }
 
 }

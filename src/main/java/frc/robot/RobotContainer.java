@@ -10,6 +10,7 @@ import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLE
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SemiAutoNerdShooterCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
@@ -54,6 +55,8 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(driverController, XboxController.Button.kB.value).toggleWhenPressed(new SemiAutoNerdShooterCommand(leftNerdShooterSubsystem, driverController));
+
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
     
