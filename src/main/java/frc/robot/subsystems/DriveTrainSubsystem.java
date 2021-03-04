@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.DriveTrainConstants.OPEN_LOOP_RAMP;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -21,6 +23,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftFollower.configFactoryDefault();
     rightLeader.configFactoryDefault();
     rightFollower.configFactoryDefault();
+
+    leftLeader.configOpenloopRamp(OPEN_LOOP_RAMP);
+    rightLeader.configOpenloopRamp(OPEN_LOOP_RAMP);
 
     leftLeader.setInverted(true);
     leftFollower.setInverted(true);
