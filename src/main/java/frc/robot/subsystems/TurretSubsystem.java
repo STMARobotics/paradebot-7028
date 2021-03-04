@@ -5,7 +5,7 @@ import static frc.robot.Constants.TurretConstants.DEVICE_ID_PIGEON;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_TURRET;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -22,7 +22,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem() {
     turret.configFactoryDefault();
-    turret.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0);
+    turret.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    turret.setSensorPhase(true);
+
+    turret.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 1, 0);
     turret.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 0);
 
     actuator.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
