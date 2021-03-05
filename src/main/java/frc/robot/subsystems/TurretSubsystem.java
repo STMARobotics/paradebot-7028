@@ -5,8 +5,10 @@ import static frc.robot.Constants.TurretConstants.DEVICE_ID_PIGEON;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_TURRET;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -21,12 +23,25 @@ public class TurretSubsystem extends SubsystemBase {
   private final Servo actuator = new Servo(DEVICE_ID_CANNON_ACTUATOR);
 
   public TurretSubsystem() {
-    turret.configFactoryDefault();
-    turret.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    turret.setSensorPhase(true);
+    TalonSRXConfiguration turretTalonConfig = new TalonSRXConfiguration();
+    // Set encoder as primary so soft limits can be used
+    turretTalonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
+    // Primary PID all zeros to cancel out PID with encoder
+    turretTalonConfig.slot0.kP = 0d;
+    turretTalonConfig.slot0.kI = 0d;
+    turretTalonConfig.slot0.kD = 0d;
 
-    turret.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 1, 0);
-    turret.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 0);
+    // Aux PID for Pigeon
+    turretTalonConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    turretTalonConfig.remoteFilter0.remoteSensorDeviceID = pigeon.getDeviceID();
+    turretTalonConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.GadgeteerPigeon_Yaw;
+    turretTalonConfig.slot1.kP = .01;
+    turretTalonConfig.slot1.kI = 0d;
+    turretTalonConfig.slot1.kD = 0d;
+
+    turret.configFactoryDefault();
+    turret.configAllSettings(turretTalonConfig);
+    turret.setSensorPhase(true);
 
     actuator.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
   }
@@ -38,14 +53,21 @@ public class TurretSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Yaw", ypr[0]);
   }
 
-  public double getPosition() {
-    double[] position = new double[3];
-    pigeon.getYawPitchRoll(position);
-    return position[0];
+  /**
+   * Gets the gyro position in sensor native units (8192 units per rotation)
+   * @return position
+   */
+  public double getGyroPosition() {
+    return turret.getSelectedSensorPosition(1);
   }
 
-  public void setPosition(double position) {
-    turret.set(ControlMode.Position, position);    
+  /**
+   * Sets the position based in the gyro native units
+   * @param position position to set in gyro native units
+   */
+  public void setPositionWithGyro(double position) {
+    // Only aux PID is used since that's where the Pigeon is selected
+    turret.set(ControlMode.Position, 0, DemandType.AuxPID, position);
   }
 
   public void rotate(double speed) {
