@@ -34,7 +34,7 @@ public class TurretHoldPositionCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.stop();
+    turretSubsystem.stopRotation();
   }
 }
 
