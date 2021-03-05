@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.ToggleAudio;
+import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,7 +31,9 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
+  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
+  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -38,6 +42,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
+    turretSubsystem.setDefaultCommand(teleOpTurretCommand);
   }
 
   /**
@@ -49,7 +54,13 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+    
     new JoystickButton(driverController, XboxController.Button.kX.value).toggleWhenPressed(new ToggleAudio(), true);
+    
+    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+        .whenPressed(() -> turretSubsystem.raiseCannonToMax(), turretSubsystem);
+    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+        .whenPressed(() -> turretSubsystem.lowerCannonToMin(), turretSubsystem);
   }
 
 }
