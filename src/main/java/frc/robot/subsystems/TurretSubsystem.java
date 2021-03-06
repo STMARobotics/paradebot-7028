@@ -1,12 +1,14 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.TurretConstants.DEVICE_ID_CANNON_ACTUATOR;
+import static frc.robot.Constants.TurretConstants.DEVICE_ID_CANNON_ACTUATOR_ONE;
+import static frc.robot.Constants.TurretConstants.DEVICE_ID_CANNON_ACTUATOR_TWO;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_PIGEON;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_TURRET;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -20,7 +22,8 @@ public class TurretSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX turret = new WPI_TalonSRX(DEVICE_ID_TURRET);
   private final PigeonIMU pigeon = new PigeonIMU(DEVICE_ID_PIGEON);
-  private final Servo actuator = new Servo(DEVICE_ID_CANNON_ACTUATOR);
+  private final Servo actuatorOne = new Servo(DEVICE_ID_CANNON_ACTUATOR_ONE);
+  private final Servo actuatorTwo = new Servo(DEVICE_ID_CANNON_ACTUATOR_TWO);
 
   public TurretSubsystem() {
     TalonSRXConfiguration turretTalonConfig = new TalonSRXConfiguration();
@@ -39,11 +42,15 @@ public class TurretSubsystem extends SubsystemBase {
     turretTalonConfig.slot1.kI = 0d;
     turretTalonConfig.slot1.kD = 0d;
 
+    turretTalonConfig.reverseLimitSwitchNormal = LimitSwitchNormal.NormallyClosed;
+    turretTalonConfig.forwardLimitSwitchNormal = LimitSwitchNormal.NormallyClosed;
+
     turret.configFactoryDefault();
     turret.configAllSettings(turretTalonConfig);
     turret.setSensorPhase(true);
 
-    actuator.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
+    actuatorOne.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
+    actuatorTwo.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
   }
 
   @Override
@@ -79,11 +86,13 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void raiseCannonToMax() {
-    actuator.setSpeed(1.0);
+    actuatorOne.setSpeed(1.0);
+    actuatorTwo.setSpeed(1.0);
   }
 
   public void lowerCannonToMin() {
-    actuator.setSpeed(-1.0);
+    actuatorOne.setSpeed(-1.0);
+    actuatorTwo.setSpeed(-1.0);
   }
 
 }

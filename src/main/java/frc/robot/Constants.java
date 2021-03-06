@@ -21,7 +21,7 @@ public final class Constants {
   }
 
   public static final class CannonConstants {
-    public static final int DEVICE_ID_CANNON_VALVE = 1;
+    public static final int DEVICE_ID_CANNON_VALVE = 0;
     public static final double VALVE_OPEN_TIME = 1.0;
   }
 
@@ -35,7 +35,8 @@ public final class Constants {
   }
 
   public static final class TurretConstants {
-    public static final int DEVICE_ID_CANNON_ACTUATOR = 0;
+    public static final int DEVICE_ID_CANNON_ACTUATOR_ONE = 1;
+    public static final int DEVICE_ID_CANNON_ACTUATOR_TWO = 2;
     public static final int DEVICE_ID_TURRET = 5;
     public static final int DEVICE_ID_PIGEON = 7;
   }
