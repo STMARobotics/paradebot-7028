@@ -8,16 +8,14 @@ import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_JOYSTICK;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.EntryNotification;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ManageRegulatorCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
@@ -43,6 +41,7 @@ public class RobotContainer {
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
+  private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -51,26 +50,13 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    var regulatorPositionModeEntry = Shuffleboard.getTab("SmartDashboard")
-        .addPersistent("Regulator Position Mode", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-    scheduleRegulatorModeCommand(regulatorPositionModeEntry);
-    regulatorPositionModeEntry.addListener(this::handleRegulatorPositionModeEntry,
-        EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+    Shuffleboard.getTab("Console").addNumber("Pressure", cannonSubsystem::getPressure)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 100))
+        .withSize(3, 2).withPosition(0, 0);
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
-  }
-
-  private void handleRegulatorPositionModeEntry(EntryNotification notification) {
-    scheduleRegulatorModeCommand(notification.getEntry());
-  }
-
-  private void scheduleRegulatorModeCommand(NetworkTableEntry entry) {
-    if (entry.getBoolean(true)) {
-      new ManageRegulatorCommand(cannonSubsystem, joystick).schedule();
-    } else {
-      new TeleopRegulatorCommand(cannonSubsystem, driverController).schedule();
-    }
+    cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
   }
 
   /**

@@ -1,18 +1,17 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CannonSubsystem;
 
 public class TeleopRegulatorCommand extends CommandBase {
 
   private final CannonSubsystem cannonSubsystem;
-  private final XboxController controller;
+  private final Joystick joystick;
 
-  public TeleopRegulatorCommand(CannonSubsystem cannonSubsystem, XboxController controller) {
+  public TeleopRegulatorCommand(CannonSubsystem cannonSubsystem, Joystick joystick) {
     this.cannonSubsystem = cannonSubsystem;
-    this.controller = controller;
+    this.joystick = joystick;
 
     addRequirements(cannonSubsystem);
   }
@@ -24,7 +23,7 @@ public class TeleopRegulatorCommand extends CommandBase {
 
   @Override
   public void execute() {
-    cannonSubsystem.setPressureRegulatorPower(controller.getY(Hand.kRight));
+    cannonSubsystem.setPressureRegulatorPower(joystick.getZ());
   }
 
   @Override
