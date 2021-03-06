@@ -7,6 +7,8 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class TeleOpTurretCommand extends CommandBase {
 
+  private PlaySound rotationSound;
+
   private final TurretSubsystem turretSubsystem;
 
   private final XboxController xboxController;
@@ -21,6 +23,15 @@ public class TeleOpTurretCommand extends CommandBase {
   public void execute() {
     double leftTrigger = xboxController.getTriggerAxis(Hand.kLeft);
     double rightTrigger =  xboxController.getTriggerAxis(Hand.kRight);
+
+    if (leftTrigger > 0.1 || rightTrigger > 0.1){
+      rotationSound = new PlaySound("rotation");
+      rotationSound.schedule();
+    }
+    else if (rotationSound != null) {
+      rotationSound.cancel();
+    }
+
     if (leftTrigger > rightTrigger) {
       turretSubsystem.rotate(-leftTrigger / 12);
     } else {
