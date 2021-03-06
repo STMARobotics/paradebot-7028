@@ -87,6 +87,11 @@ public class RobotContainer {
         .whenPressed(() -> turretSubsystem.raiseCannonToMax(), turretSubsystem);
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
         .whenPressed(() -> turretSubsystem.lowerCannonToMin(), turretSubsystem);
+
+    new JoystickButton(driverController, XboxController.Button.kX.value)
+        .whenPressed(cannonSubsystem::openBlastTank);
+    new JoystickButton(driverController, XboxController.Button.kB.value)
+        .whenPressed(cannonSubsystem::closeBlastTank);
   }
 
 }

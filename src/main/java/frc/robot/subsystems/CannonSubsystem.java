@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.CannonConstants.DEVICE_ID_BLAST_FORWARD;
+import static frc.robot.Constants.CannonConstants.DEVICE_ID_BLAST_REVERSE;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_CANNON_VALVE;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_PRESSURE_REGULATOR;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_PRESSURE_SENSOR;
@@ -11,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +24,7 @@ public class CannonSubsystem extends SubsystemBase {
   private final Spark valve = new Spark(DEVICE_ID_CANNON_VALVE);
   private final WPI_TalonSRX pressureRegulator = new WPI_TalonSRX(DEVICE_ID_PRESSURE_REGULATOR);
   private final AnalogInput pressureSensor = new AnalogInput(DEVICE_ID_PRESSURE_SENSOR);
+  private final DoubleSolenoid blastSolenoid = new DoubleSolenoid(DEVICE_ID_BLAST_FORWARD, DEVICE_ID_BLAST_REVERSE);
 
   public CannonSubsystem() {
     TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
@@ -35,6 +40,14 @@ public class CannonSubsystem extends SubsystemBase {
 
   public void closeValve() {
     valve.set(0);
+  }
+
+  public void openBlastTank() {
+    blastSolenoid.set(Value.kForward);
+  }
+
+  public void closeBlastTank() {
+    blastSolenoid.set(Value.kReverse);
   }
 
   public void setPressureRegulatorPosition(double target) {

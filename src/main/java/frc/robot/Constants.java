@@ -25,6 +25,8 @@ public final class Constants {
     public static final int DEVICE_ID_CANNON_VALVE = 0;
     public static final int DEVICE_ID_PRESSURE_REGULATOR = 4;
     public static final int DEVICE_ID_PRESSURE_SENSOR = 0;
+    public static final int DEVICE_ID_BLAST_FORWARD = 0;
+    public static final int DEVICE_ID_BLAST_REVERSE = 1;
     public static final double VALVE_OPEN_TIME = 0.2;
 
     // regulator max and min aren't tuned
