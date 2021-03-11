@@ -24,7 +24,7 @@ public class TeleOpTurretCommand extends CommandBase {
     double leftTrigger = xboxController.getTriggerAxis(Hand.kLeft);
     double rightTrigger =  xboxController.getTriggerAxis(Hand.kRight);
 
-    if (leftTrigger > 0.1 || rightTrigger > 0.1){
+    if (leftTrigger > 0.08 || rightTrigger > 0.08){
       rotationSound = new PlaySound("rotation");
       rotationSound.schedule();
     }
