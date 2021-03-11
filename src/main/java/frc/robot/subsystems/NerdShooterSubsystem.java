@@ -11,7 +11,6 @@ public class NerdShooterSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX flywheel;
   private final DoubleSolenoid pusher;
-  private boolean targetOut = false;
   
   public NerdShooterSubsystem(NerdShooters shooter) {
     this.flywheel = new WPI_TalonSRX(shooter.getflywheelId());
