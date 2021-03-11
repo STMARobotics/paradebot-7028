@@ -18,11 +18,19 @@ public final class Constants {
 
   public static final class ControllerConstants {
     public static final int DEVICE_ID_DRIVER_CONTROLLER = 0;
+    public static final int DEVICE_ID_JOYSTICK = 1;
   }
 
   public static final class CannonConstants {
-    public static final int DEVICE_ID_CANNON_VALVE = 1;
-    public static final double VALVE_OPEN_TIME = 1.0;
+    public static final int DEVICE_ID_CANNON_VALVE = 0;
+    public static final int DEVICE_ID_PRESSURE_REGULATOR = 4;
+    public static final int DEVICE_ID_PRESSURE_SENSOR = 0;
+    public static final int DEVICE_ID_BLAST_FORWARD = 0;
+    public static final int DEVICE_ID_BLAST_REVERSE = 1;
+    public static final double VALVE_OPEN_TIME = 0.2;
+
+    // regulator max and min aren't tuned
+    public static final double PRESSURE_REGULATOR_KP = 0.001;
   }
 
   public static final class DriveTrainConstants {
@@ -35,7 +43,8 @@ public final class Constants {
   }
 
   public static final class TurretConstants {
-    public static final int DEVICE_ID_CANNON_ACTUATOR = 0;
+    public static final int DEVICE_ID_CANNON_ACTUATOR_ONE = 1;
+    public static final int DEVICE_ID_CANNON_ACTUATOR_TWO = 2;
     public static final int DEVICE_ID_TURRET = 5;
     public static final int DEVICE_ID_PIGEON = 7;
   }

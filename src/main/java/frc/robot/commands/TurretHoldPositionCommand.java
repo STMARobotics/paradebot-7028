@@ -19,12 +19,12 @@ public class TurretHoldPositionCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    turretPosition = turretSubsystem.getPosition();
+    turretPosition = turretSubsystem.getGyroPosition();
   }
 
   @Override
   public void execute() {
-    turretSubsystem.setPosition(turretPosition);
+    turretSubsystem.setPositionWithGyro(turretPosition);
   }
 
   @Override
