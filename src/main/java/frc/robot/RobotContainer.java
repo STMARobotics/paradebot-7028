@@ -21,6 +21,7 @@ import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.subsystems.CannonSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -42,6 +43,7 @@ public class RobotContainer {
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
+  private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -68,6 +70,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+        .whileHeld(() -> compressorSubsystem.startCompressor(), compressorSubsystem);
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+        .whenReleased(() -> compressorSubsystem.startCompressor(), compressorSubsystem);
     
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
         .whenPressed(() -> turretSubsystem.raiseCannonToMax(), turretSubsystem);

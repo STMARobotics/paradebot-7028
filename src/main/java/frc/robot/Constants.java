@@ -21,6 +21,10 @@ public final class Constants {
     public static final int DEVICE_ID_JOYSTICK = 1;
   }
 
+  public static final class CompressorConstants {
+    public static final int DEVICE_ID_COMPRESSOR = 3;
+  }
+
   public static final class CannonConstants {
     public static final int DEVICE_ID_CANNON_VALVE = 0;
     public static final int DEVICE_ID_PRESSURE_REGULATOR = 4;
