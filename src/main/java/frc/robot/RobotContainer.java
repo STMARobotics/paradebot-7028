@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.PlaySoundOnceCommand;
@@ -76,7 +75,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kA.value)
-        .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+        .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
     
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
@@ -85,10 +84,10 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
         .whenPressed(() -> turretSubsystem.lowerCannonToMin(), turretSubsystem);
 
-    new JoystickButton(driverController, XboxController.Button.kX.value).whenPressed(
-        shotAudioCommand.alongWith(new InstantCommand(cannonSubsystem::openBlastTank, cannonSubsystem)));
+    new JoystickButton(driverController, XboxController.Button.kX.value)
+        .whenPressed(cannonSubsystem::openBlastTank, cannonSubsystem);
     new JoystickButton(driverController, XboxController.Button.kB.value)
-        .whenPressed(new InstantCommand(cannonSubsystem::closeBlastTank, cannonSubsystem));
+        .whenPressed(cannonSubsystem::closeBlastTank, cannonSubsystem);
   }
 
 }
