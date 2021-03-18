@@ -33,9 +33,9 @@ public class TeleOpTurretCommand extends CommandBase {
     }
 
     if (leftTrigger > rightTrigger) {
-      turretSubsystem.rotate(-leftTrigger / 12);
+      turretSubsystem.rotate(-leftTrigger / 6);
     } else {
-      turretSubsystem.rotate(rightTrigger / 12);
+      turretSubsystem.rotate(rightTrigger / 6);
     }
   }
 
