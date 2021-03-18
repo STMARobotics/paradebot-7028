@@ -8,34 +8,22 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.AudioConstants;
 
-public class ToggleAudio extends CommandBase {
-  /** Creates a new ToggleAudio. */
-  
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("datatable");
-  NetworkTableEntry entry = table.getEntry("audio");
-  public ToggleAudio() {
-    
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+public class ToggleAudioCommand extends CommandBase {
+  private final NetworkTable table = NetworkTableInstance.getDefault().getTable(AudioConstants.TABLE_NAME);
+  private final NetworkTableEntry entry = table.getEntry("audio");
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     entry.setBoolean(true);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     entry.setBoolean(false);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
