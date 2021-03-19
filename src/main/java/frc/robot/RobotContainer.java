@@ -72,9 +72,9 @@ public class RobotContainer {
         .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
 
     new JoystickButton(driverController, XboxController.Button.kY.value)
-        .whileHeld(() -> compressorSubsystem.startCompressor(), compressorSubsystem);
+        .whileHeld(compressorSubsystem::startCompressor, compressorSubsystem);
     new JoystickButton(driverController, XboxController.Button.kY.value)
-        .whenReleased(() -> compressorSubsystem.stopCompressor(), compressorSubsystem);
+        .whenReleased(compressorSubsystem::stopCompressor, compressorSubsystem);
     
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
         .whenPressed(() -> turretSubsystem.raiseCannonToMax(), turretSubsystem);
