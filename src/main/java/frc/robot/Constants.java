@@ -52,4 +52,8 @@ public final class Constants {
     public static final int DEVICE_ID_TURRET = 5;
     public static final int DEVICE_ID_PIGEON = 7;
   }
+
+  public static final class AudioConstants {
+    public static final String TABLE_NAME = "audio";
+  }
 }
