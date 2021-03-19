@@ -21,7 +21,6 @@ public class NerdShootCommand extends CommandBase {
   @Override
   public void initialize() {
     System.out.println("Start shooting");
-    nerdShooterSubsystem.setFlywheelPower(1.0);
     nerdShooterSubsystem.setPusherOut();
     firing = true;
     timer.reset();
@@ -48,6 +47,7 @@ public class NerdShootCommand extends CommandBase {
     //   timer.stop();
     //   timer.reset();
     // }
+    nerdShooterSubsystem.setFlywheelPower(0.5);
     if (firing && timer.hasElapsed(PUSHER_CYCLE_TIME)) {
       nerdShooterSubsystem.setPusherIn();
       firing = false;
