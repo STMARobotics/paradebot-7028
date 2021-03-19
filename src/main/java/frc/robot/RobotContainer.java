@@ -12,15 +12,19 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.NerdShootCommand;
+import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.commands.TeleopRegulatorCommand;
+import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.NerdShooterSubsystem;
@@ -34,11 +38,11 @@ import frc.robot.subsystems.TurretSubsystem;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
   private final Joystick joystick = new Joystick(DEVICE_ID_JOYSTICK);
+  
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
+  
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooters.LEFT);
@@ -47,7 +51,10 @@ public class RobotContainer {
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
-
+  
+  private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
+  private final PlaySoundOnceCommand promoAudioCommand = new PlaySoundOnceCommand("promotion");
+  private final PlaySoundOnceCommand shotAudioCommand = new PlaySoundOnceCommand("shot");
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -62,6 +69,7 @@ public class RobotContainer {
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
     cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
+    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand);
   }
 
   /**
@@ -77,17 +85,19 @@ public class RobotContainer {
       .whenPressed(() -> nerdShootCommand.schedule());
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
-        .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+        .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
     
+    new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
+    new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
         .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
         .whenPressed(turretSubsystem::lowerCannonToMin, turretSubsystem);
 
     new JoystickButton(driverController, XboxController.Button.kX.value)
-        .whenPressed(cannonSubsystem::openBlastTank);
+        .whenPressed(cannonSubsystem::openBlastTank, cannonSubsystem);
     new JoystickButton(driverController, XboxController.Button.kB.value)
-        .whenPressed(cannonSubsystem::closeBlastTank);
+        .whenPressed(cannonSubsystem::closeBlastTank, cannonSubsystem);
   }
 
 }

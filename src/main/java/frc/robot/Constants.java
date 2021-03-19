@@ -61,4 +61,7 @@ public final class Constants {
     public static final double PUSHER_CYCLE_TIME = 0.1;
   }
 
+  public static final class AudioConstants {
+    public static final String TABLE_NAME = "audio";
+  }
 }
