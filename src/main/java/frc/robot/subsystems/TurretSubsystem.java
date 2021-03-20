@@ -6,7 +6,6 @@ import static frc.robot.Constants.TurretConstants.DEVICE_ID_PIGEON;
 import static frc.robot.Constants.TurretConstants.DEVICE_ID_TURRET;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
@@ -24,26 +23,28 @@ public class TurretSubsystem extends SubsystemBase {
   public TurretSubsystem() {
     TalonSRXConfiguration turretTalonConfig = new TalonSRXConfiguration();
     // Set encoder as primary so soft limits can be used
-    turretTalonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
+    // turretTalonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
     // Primary PID all zeros to cancel out PID with encoder
-    turretTalonConfig.slot0.kP = 0d;
+    turretTalonConfig.slot0.kP = 1d;
     turretTalonConfig.slot0.kI = 0d;
     turretTalonConfig.slot0.kD = 0d;
+    // turretTalonConfig.closedloopRamp = TurretConstants.CLOSED_LOOP_RAMP;
 
     // Aux PID for Pigeon
-    turretTalonConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
     turretTalonConfig.remoteFilter0.remoteSensorDeviceID = DEVICE_ID_PIGEON;
     turretTalonConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.GadgeteerPigeon_Yaw;
-    turretTalonConfig.slot1.kP = .01;
-    turretTalonConfig.slot1.kI = 0d;
-    turretTalonConfig.slot1.kD = 0d;
-
+    turretTalonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    // turretTalonConfig.slot1.kP = .1;
+    // turretTalonConfig.slot1.kI = 0d;
+    // turretTalonConfig.slot1.kD = 0d;
+    
     turretTalonConfig.reverseLimitSwitchNormal = LimitSwitchNormal.NormallyClosed;
     turretTalonConfig.forwardLimitSwitchNormal = LimitSwitchNormal.NormallyClosed;
 
     turret.configFactoryDefault();
     turret.configAllSettings(turretTalonConfig);
-    turret.setSensorPhase(true);
+    // turret.setSensorPhase(true);
+    turret.configClosedLoopPeakOutput(0, .3);
 
     actuatorOne.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
     actuatorTwo.setBounds(2.0, 1.8, 1.525, 1.25, 1.05);
@@ -54,7 +55,7 @@ public class TurretSubsystem extends SubsystemBase {
    * @return position
    */
   public double getGyroPosition() {
-    return turret.getSelectedSensorPosition(1);
+    return turret.getSelectedSensorPosition(0);
   }
 
   /**
@@ -63,7 +64,7 @@ public class TurretSubsystem extends SubsystemBase {
    */
   public void setPositionWithGyro(double position) {
     // Only aux PID is used since that's where the Pigeon is selected
-    turret.set(ControlMode.Position, 0, DemandType.AuxPID, position);
+    turret.set(ControlMode.Position, position);
   }
 
   public void rotate(double speed) {
