@@ -25,6 +25,7 @@ import frc.robot.commands.TeleOpTurretCommand;
 import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.subsystems.CannonSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -46,6 +47,8 @@ public class RobotContainer {
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
+  private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
+
   
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
   private final PlaySoundOnceCommand promoAudioCommand = new PlaySoundOnceCommand("promotion");
@@ -76,6 +79,13 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
+        
+
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+        .whileHeld(compressorSubsystem::startCompressor, compressorSubsystem);
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+        .whenReleased(compressorSubsystem::stopCompressor, compressorSubsystem);
+        
     
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
