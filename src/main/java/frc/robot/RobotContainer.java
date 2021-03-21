@@ -90,14 +90,12 @@ public class RobotContainer {
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
-        
 
     new JoystickButton(driverController, XboxController.Button.kY.value)
         .whileHeld(compressorSubsystem::startCompressor, compressorSubsystem);
     new JoystickButton(driverController, XboxController.Button.kY.value)
         .whenReleased(compressorSubsystem::stopCompressor, compressorSubsystem);
-        
-    
+
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kX.value)
