@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.NerdShootCommand;
 import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
@@ -27,6 +28,7 @@ import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.NerdShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -44,6 +46,9 @@ public class RobotContainer {
   
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
+  private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.LEFT);
+  private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.RIGHT);
+  private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, driverController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
@@ -77,6 +82,11 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // whileHeld for Full Auto
+    // whenPressed for Semi Auto
+    new JoystickButton(driverController, XboxController.Button.kB.value)
+      .whenPressed(() -> nerdShootCommand.schedule());
+
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
         
@@ -90,9 +100,9 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-        .whenPressed(() -> turretSubsystem.raiseCannonToMax(), turretSubsystem);
+        .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-        .whenPressed(() -> turretSubsystem.lowerCannonToMin(), turretSubsystem);
+        .whenPressed(turretSubsystem::lowerCannonToMin, turretSubsystem);
 
     new JoystickButton(driverController, XboxController.Button.kX.value)
         .whenPressed(cannonSubsystem::openBlastTank, cannonSubsystem);
