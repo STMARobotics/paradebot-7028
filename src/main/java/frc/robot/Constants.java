@@ -69,6 +69,21 @@ public final class Constants {
     public static final double ACT_BOUND_MIN = 1.05;
   }
 
+  public static final class NerdShooterConstants {
+    public static final int DEVICE_ID_LEFT_FLYWHEEL = 6;
+    public static final int DEVICE_ID_LEFT_PUSHER_FORWARD = 2;
+    public static final int DEVICE_ID_LEFT_PUSHER_REVERSE = 3;
+
+    public static final int DEVICE_ID_RIGHT_FLYWHEEL = 7;
+    public static final int DEVICE_ID_RIGHT_PUSHER_FORWARD = 4;
+    public static final int DEVICE_ID_RIGHT_PUSHER_REVERSE = 5;
+
+    /**
+     * time it takes pusher to go out, then in
+     */
+    public static final double PUSHER_CYCLE_TIME = 0.2;
+  }
+
   public static final class AudioConstants {
     public static final String TABLE_NAME = "audio";
   }
