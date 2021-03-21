@@ -21,6 +21,7 @@ import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
+import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.commands.TurretHoldPositionCommand;
 import frc.robot.subsystems.CannonSubsystem;
@@ -44,7 +45,8 @@ public class RobotContainer {
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, operatorController);
-  // private final TeleopRegulatorCommand teleopRegulatorCommand = new TeleopRegulatorCommand(cannonSubsystem, joystick);
+  private final TeleopRegulatorCommand teleopRegulatorCommand = 
+      new TeleopRegulatorCommand(cannonSubsystem, operatorController);
   private final TurretHoldPositionCommand turretHoldPositionCommand = 
       new TurretHoldPositionCommand(turretSubsystem, operatorController);
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
@@ -63,7 +65,7 @@ public class RobotContainer {
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
-    // cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
+    cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
     new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand);
   }
 

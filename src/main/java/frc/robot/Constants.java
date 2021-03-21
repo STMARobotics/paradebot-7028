@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -50,17 +48,21 @@ public final class Constants {
     public static final int DEVICE_ID_TURRET = 5;
     public static final int DEVICE_ID_PIGEON = 7;
 
-    public static final double kS = 0.782;
-    public static final double kV = 0.164;
-    public static final double kA = 0.0183;
+    public static final double CLOSED_LOOP_MAX_OUTPUT = 0.3;
+    public static final double kP = 1d;
+    public static final double kD = 0d;
 
-    public static final SimpleMotorFeedforward FEED_FORWARD = new SimpleMotorFeedforward(kS, kV, kA);
+    /** Max teleop output percentage */
+    public static final double TELEOP_MAX_OUTPUT = 1d / 6d;
 
-    // public static final double r_squared = 0.996;
-    // public static final double kP = 0.405;
+    /** Max change in native units per iteration (20ms) */
+    public static final double TELEOP_MAX_CHANGE = 20d;
 
-    public static final double CLOSED_LOOP_RAMP = 0.2;
-    public static final double CLOSED_LOOP_MAX_V = 2;
+    public static final double ACT_BOUND_MAX = 2.0;
+    public static final double ACT_BOUND_DEAD_MAX = 1.8;
+    public static final double ACT_BOUND_CENTER = 1.525;
+    public static final double ACT_BOUND_DEAD_MIN = 1.25;
+    public static final double ACT_BOUND_MIN = 1.05;
   }
 
   public static final class AudioConstants {

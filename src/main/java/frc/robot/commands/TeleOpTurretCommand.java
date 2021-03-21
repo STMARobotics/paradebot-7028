@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static frc.robot.Constants.TurretConstants.TELEOP_MAX_OUTPUT;
+
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -22,18 +24,18 @@ public class TeleOpTurretCommand extends CommandBase {
   @Override
   public void execute() {
     double leftTrigger = xboxController.getTriggerAxis(Hand.kLeft);
-    double rightTrigger =  xboxController.getTriggerAxis(Hand.kRight);
+    double rightTrigger = xboxController.getTriggerAxis(Hand.kRight);
 
-    if (leftTrigger > 0.08 || rightTrigger > 0.08){
+    if (leftTrigger > 0.08 || rightTrigger > 0.08) {
       rotationSound.schedule();
     } else {
       rotationSound.cancel();
     }
 
     if (leftTrigger > rightTrigger) {
-      turretSubsystem.rotate(-leftTrigger / 6);
+      turretSubsystem.rotate(-leftTrigger * TELEOP_MAX_OUTPUT);
     } else {
-      turretSubsystem.rotate(rightTrigger / 6);
+      turretSubsystem.rotate(rightTrigger * TELEOP_MAX_OUTPUT);
     }
   }
 
