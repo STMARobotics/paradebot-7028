@@ -10,7 +10,6 @@ public class NerdShootCommand extends CommandBase {
 
   private final NerdShooterSubsystem nerdShooterSubsystem;
   private Timer timer = new Timer();
-  private boolean firing = false;
 
   public NerdShootCommand(NerdShooterSubsystem nerdShooterSubsystem) {
     this.nerdShooterSubsystem = nerdShooterSubsystem;
@@ -21,7 +20,6 @@ public class NerdShootCommand extends CommandBase {
   @Override
   public void initialize() {
     nerdShooterSubsystem.setPusherOut();
-    firing = true;
     timer.reset();
     timer.start();
   }
@@ -29,16 +27,14 @@ public class NerdShootCommand extends CommandBase {
   @Override
   public void execute() {
     nerdShooterSubsystem.setFlywheelPower(0.5);
-    if (firing && timer.hasElapsed(PUSHER_CYCLE_TIME)) {
+    if (timer.hasElapsed(PUSHER_CYCLE_TIME / 2.0d)) {
       nerdShooterSubsystem.setPusherIn();
-      firing = false;
-      timer.reset();
     }
   }
 
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(PUSHER_CYCLE_TIME) && !firing;
+    return timer.hasElapsed(PUSHER_CYCLE_TIME);
   }
 
   @Override

@@ -62,7 +62,10 @@ public final class Constants {
     public static final int DEVICE_ID_RIGHT_PUSHER_FORWARD = 4;
     public static final int DEVICE_ID_RIGHT_PUSHER_REVERSE = 5;
 
-    public static final double PUSHER_CYCLE_TIME = 0.1;
+    /**
+     * time it takes pusher to go out, then in
+     */
+    public static final double PUSHER_CYCLE_TIME = 0.2;
   }
 
   public static final class AudioConstants {
