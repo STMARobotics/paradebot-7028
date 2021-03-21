@@ -6,7 +6,7 @@ package frc.robot;
 
 import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
-import static frc.robot.Constants.ControllerConstants.DEVICE_ID_JOYSTICK;
+import static frc.robot.Constants.ControllerConstants.DEVICE_ID_OPERATOR_CONTROLLER;
 
 import java.util.Map;
 
@@ -40,7 +40,7 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class RobotContainer {
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
-  private final XboxController operatorController = new XboxController(DEVICE_ID_JOYSTICK);
+  private final XboxController operatorController = new XboxController(DEVICE_ID_OPERATOR_CONTROLLER);
   
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   
