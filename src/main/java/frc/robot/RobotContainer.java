@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.CompressorCommand;
 import frc.robot.commands.NerdShootCommand;
 import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
@@ -43,11 +44,12 @@ public class RobotContainer {
   private final XboxController operatorController = new XboxController(DEVICE_ID_OPERATOR_CONTROLLER);
   
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
-  
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.LEFT);
   private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.RIGHT);
+  private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
+
   private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, operatorController);
@@ -55,10 +57,11 @@ public class RobotContainer {
       new TeleopRegulatorCommand(cannonSubsystem, operatorController);
   private final TurretHoldPositionCommand turretHoldPositionCommand = 
       new TurretHoldPositionCommand(turretSubsystem, operatorController);
-  private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
   private final PlaySoundOnceCommand promoAudioCommand = new PlaySoundOnceCommand("promotion");
   private final PlaySoundOnceCommand shotAudioCommand = new PlaySoundOnceCommand("shot");
+  private final CompressorCommand compressorCommand = new CompressorCommand(compressorSubsystem);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -73,7 +76,7 @@ public class RobotContainer {
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
     cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
-    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand);
+    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand).whenActive(compressorCommand);
   }
 
   /**
@@ -91,10 +94,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
 
-    new JoystickButton(driverController, XboxController.Button.kY.value)
-        .whileHeld(compressorSubsystem::startCompressor, compressorSubsystem);
-    new JoystickButton(driverController, XboxController.Button.kY.value)
-        .whenReleased(compressorSubsystem::stopCompressor, compressorSubsystem);
+    new JoystickButton(driverController, XboxController.Button.kY.value).toggleWhenPressed(compressorCommand);
 
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
