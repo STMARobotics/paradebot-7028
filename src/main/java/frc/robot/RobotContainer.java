@@ -5,8 +5,8 @@
 package frc.robot;
 
 import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
+import static frc.robot.Constants.ControllerConstants.DEVICE_ID_CANNON_CONTROLLER;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
-import static frc.robot.Constants.ControllerConstants.DEVICE_ID_OPERATOR_CONTROLLER;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class RobotContainer {
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
-  private final XboxController operatorController = new XboxController(DEVICE_ID_OPERATOR_CONTROLLER);
+  private final XboxController operatorController = new XboxController(DEVICE_ID_CANNON_CONTROLLER);
   
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
@@ -89,7 +89,7 @@ public class RobotContainer {
     // whileHeld for Full Auto
     // whenPressed for Semi Auto
     new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whenPressed(() -> nerdShootCommand.schedule());
+      .whileHeld(() -> nerdShootCommand.schedule());
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));

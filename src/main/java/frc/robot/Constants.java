@@ -18,7 +18,13 @@ public final class Constants {
 
   public static final class ControllerConstants {
     public static final int DEVICE_ID_DRIVER_CONTROLLER = 0;
-    public static final int DEVICE_ID_OPERATOR_CONTROLLER = 1;
+    public static final int DEVICE_ID_CANNON_CONTROLLER = 1;
+    public static final int DEVICE_ID_NERD_CONTROLLER = 2;
+
+    public static final int LEFT_NERD_SHOOTER_REV_INDEX = 0;
+    public static final int LEFT_NERD_SHOOTER_FIRE_INDEX = 1;
+    public static final int RIGHT_NERD_SHOOTER_REV_INDEX = 2;
+    public static final int RIGHT_NERD_SHOOTER_FIRE_INDEX = 3;
   }
 
   public static final class CompressorConstants {
@@ -81,7 +87,9 @@ public final class Constants {
     /**
      * time it takes pusher to go out, then in
      */
-    public static final double PUSHER_CYCLE_TIME = 0.2;
+    // public static final double PUSHER_CYCLE_TIME = 0.3;
+    public static final double PUSHER_OUT_TIME = 0.05;
+    public static final double PUSHER_FULL_CYCLE_TIME = 0.13;
   }
 
   public static final class AudioConstants {

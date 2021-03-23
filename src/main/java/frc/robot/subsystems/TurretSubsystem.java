@@ -16,6 +16,7 @@ import static frc.robot.Constants.TurretConstants.kP;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -41,6 +42,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     turret.configFactoryDefault();
     turret.configAllSettings(talonConfig);
+    turret.setNeutralMode(NeutralMode.Brake);
     turret.configClosedLoopPeakOutput(0, CLOSED_LOOP_MAX_OUTPUT);
 
     actuatorOne.setBounds(ACT_BOUND_MAX, ACT_BOUND_DEAD_MAX, ACT_BOUND_CENTER, ACT_BOUND_DEAD_MIN, ACT_BOUND_MIN);

@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
-import static frc.robot.Constants.NerdShooterConstants.PUSHER_CYCLE_TIME;
+import static frc.robot.Constants.NerdShooterConstants.PUSHER_FULL_CYCLE_TIME;
+import static frc.robot.Constants.NerdShooterConstants.PUSHER_OUT_TIME;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -27,14 +28,14 @@ public class NerdShootCommand extends CommandBase {
   @Override
   public void execute() {
     nerdShooterSubsystem.setFlywheelPower(0.5);
-    if (timer.hasElapsed(PUSHER_CYCLE_TIME / 2.0d)) {
+    if (timer.hasElapsed(PUSHER_OUT_TIME)) {
       nerdShooterSubsystem.setPusherIn();
     }
   }
 
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(PUSHER_CYCLE_TIME);
+    return timer.hasElapsed(PUSHER_FULL_CYCLE_TIME);
   }
 
   @Override
