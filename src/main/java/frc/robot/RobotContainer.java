@@ -7,6 +7,7 @@ package frc.robot;
 import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_CANNON_CONTROLLER;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
+import static frc.robot.Constants.ControllerConstants.DEVICE_ID_NERD_CONTROLLER;
 
 import java.util.Map;
 
@@ -41,7 +42,8 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class RobotContainer {
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
-  private final XboxController operatorController = new XboxController(DEVICE_ID_CANNON_CONTROLLER);
+  private final XboxController cannonController = new XboxController(DEVICE_ID_CANNON_CONTROLLER);
+  private final XboxController nerdController = new XboxController(DEVICE_ID_NERD_CONTROLLER);
   
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
@@ -52,11 +54,11 @@ public class RobotContainer {
 
   private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
-  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, operatorController);
+  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, cannonController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = 
-      new TeleopRegulatorCommand(cannonSubsystem, operatorController);
+      new TeleopRegulatorCommand(cannonSubsystem, cannonController);
   private final TurretHoldPositionCommand turretHoldPositionCommand = 
-      new TurretHoldPositionCommand(turretSubsystem, operatorController);
+      new TurretHoldPositionCommand(turretSubsystem, cannonController);
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
   private final PlaySoundOnceCommand promoAudioCommand = new PlaySoundOnceCommand("promotion");
   private final PlaySoundOnceCommand shotAudioCommand = new PlaySoundOnceCommand("shot");
@@ -103,11 +105,11 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kB.value)
         .whenPressed(cannonSubsystem::closeBlastTank, cannonSubsystem);
     
-    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value)
+    new JoystickButton(cannonController, XboxController.Button.kBumperRight.value)
         .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
-    new JoystickButton(operatorController, XboxController.Button.kBumperLeft.value)
+    new JoystickButton(cannonController, XboxController.Button.kBumperLeft.value)
         .whenPressed(turretSubsystem::lowerCannonToMin, turretSubsystem);
-    new JoystickButton(operatorController, XboxController.Button.kY.value)
+    new JoystickButton(cannonController, XboxController.Button.kY.value)
         .toggleWhenPressed(turretHoldPositionCommand);
   }
 
