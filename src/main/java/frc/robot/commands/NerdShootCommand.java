@@ -5,31 +5,30 @@ import static frc.robot.Constants.NerdShooterConstants.PUSHER_OUT_TIME;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.NerdShooterSubsystem;
+import frc.robot.subsystems.NerdPusherSubsystem;
 
 public class NerdShootCommand extends CommandBase {
 
-  private final NerdShooterSubsystem nerdShooterSubsystem;
+  private final NerdPusherSubsystem nerdPusherSubsystem;
   private Timer timer = new Timer();
 
-  public NerdShootCommand(NerdShooterSubsystem nerdShooterSubsystem) {
-    this.nerdShooterSubsystem = nerdShooterSubsystem;
+  public NerdShootCommand(NerdPusherSubsystem nerdPusherSubsystem) {
+    this.nerdPusherSubsystem = nerdPusherSubsystem;
 
-    addRequirements(nerdShooterSubsystem);
+    addRequirements(nerdPusherSubsystem);
   }
 
   @Override
   public void initialize() {
-    nerdShooterSubsystem.setPusherOut();
+    nerdPusherSubsystem.setPusherOut();
     timer.reset();
     timer.start();
   }
 
   @Override
   public void execute() {
-    nerdShooterSubsystem.setFlywheelPower(0.5);
     if (timer.hasElapsed(PUSHER_OUT_TIME)) {
-      nerdShooterSubsystem.setPusherIn();
+      nerdPusherSubsystem.setPusherIn();
     }
   }
 
@@ -40,8 +39,7 @@ public class NerdShootCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    nerdShooterSubsystem.setFlywheelPower(0.0);
-    nerdShooterSubsystem.setPusherIn();
+    nerdPusherSubsystem.setPusherIn();
     timer.stop();
   }
 

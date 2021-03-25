@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CompressorCommand;
+import frc.robot.commands.NerdRevCommand;
 import frc.robot.commands.NerdShootCommand;
 import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
@@ -30,7 +31,8 @@ import frc.robot.commands.TurretHoldPositionCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.NerdShooterSubsystem;
+import frc.robot.subsystems.NerdFlywheelSubsystem;
+import frc.robot.subsystems.NerdPusherSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -48,11 +50,16 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
-  private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.LEFT);
-  private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.RIGHT);
+  private final NerdFlywheelSubsystem leftNerdFlywheelSubsystem = new NerdFlywheelSubsystem(NerdFlywheel.LEFT);
+  private final NerdFlywheelSubsystem rightNerdFlywheelSubsystem = new NerdFlywheelSubsystem(NerdFlywheel.RIGHT);
+  private final NerdPusherSubsystem leftNerdPusherSubsystem = new NerdPusherSubsystem(NerdPusher.LEFT);
+  private final NerdPusherSubsystem rightNerdPusherSubsystem = new NerdPusherSubsystem(NerdPusher.RIGHT);
   private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
-  private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
+  private final NerdRevCommand leftNerdRevCommand = new NerdRevCommand(leftNerdFlywheelSubsystem);
+  private final NerdRevCommand rightNerdRevCommand = new NerdRevCommand(rightNerdFlywheelSubsystem);
+  private final NerdShootCommand leftNerdShootCommand = new NerdShootCommand(leftNerdPusherSubsystem);
+  private final NerdShootCommand rightNerdShootCommand = new NerdShootCommand(rightNerdPusherSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, cannonController);
   private final TeleopRegulatorCommand teleopRegulatorCommand = 
@@ -88,10 +95,15 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // whileHeld for Full Auto
-    // whenPressed for Semi Auto
-    new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whileHeld(() -> nerdShootCommand.schedule());
+    new JoystickButton(nerdController, OperatorButton.LEFT_REV.getButtonIndex())
+        .toggleWhenPressed(leftNerdRevCommand);
+    new JoystickButton(nerdController, OperatorButton.LEFT_FIRE.getButtonIndex())
+        .whileHeld(leftNerdShootCommand);
+
+    new JoystickButton(nerdController, OperatorButton.RIGHT_REV.getButtonIndex())
+        .toggleWhenPressed(rightNerdRevCommand);
+    new JoystickButton(nerdController, OperatorButton.RIGHT_FIRE.getButtonIndex())
+        .whileHeld(rightNerdShootCommand);
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
