@@ -105,17 +105,17 @@ public class RobotContainer {
     new JoystickButton(nerdController, OperatorButton.RIGHT_FIRE.getButtonIndex())
         .whileHeld(rightNerdShootCommand);
 
-    new JoystickButton(driverController, XboxController.Button.kA.value)
+    new JoystickButton(cannonController, OperatorButton.CANNON_FIRE.getButtonIndex())
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
 
     new JoystickButton(driverController, XboxController.Button.kY.value).toggleWhenPressed(compressorCommand);
 
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
-    new JoystickButton(driverController, XboxController.Button.kX.value)
-        .whenPressed(cannonSubsystem::openBlastTank, cannonSubsystem);
-    new JoystickButton(driverController, XboxController.Button.kB.value)
-        .whenPressed(cannonSubsystem::closeBlastTank, cannonSubsystem);
+    new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
+        .whileHeld(cannonSubsystem::openBlastTank, cannonSubsystem);
+    new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
+        .whenReleased(cannonSubsystem::closeBlastTank, cannonSubsystem);
     
     new JoystickButton(cannonController, XboxController.Button.kBumperRight.value)
         .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
