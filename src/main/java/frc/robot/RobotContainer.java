@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CompressorCommand;
@@ -69,9 +70,15 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    Shuffleboard.getTab("Console").addNumber("Pressure", cannonSubsystem::getPressure)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 100))
+    ShuffleboardTab consoleTab = Shuffleboard.getTab("Console");
+
+    consoleTab.addNumber("Cannon Pressure", cannonSubsystem::getPressure)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 125))
         .withSize(3, 2).withPosition(0, 0);
+
+    Shuffleboard.getTab("Console").addNumber("System Pressure", compressorSubsystem::getPressure)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 125))
+        .withSize(3, 2).withPosition(3, 0);
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
