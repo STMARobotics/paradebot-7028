@@ -29,12 +29,13 @@ public final class Constants {
 
   public static final class CompressorConstants {
     public static final int DEVICE_ID_COMPRESSOR = 3;
+    public static final int DEVICE_ID_SYSTEM_PRESSURE_SENSOR = 0;
   }
 
   public static final class CannonConstants {
     public static final int DEVICE_ID_CANNON_VALVE = 0;
     public static final int DEVICE_ID_PRESSURE_REGULATOR = 4;
-    public static final int DEVICE_ID_PRESSURE_SENSOR = 0;
+    public static final int DEVICE_ID_PRESSURE_SENSOR = 1;
     public static final int DEVICE_ID_BLAST_FORWARD = 0;
     public static final int DEVICE_ID_BLAST_REVERSE = 1;
     public static final double VALVE_OPEN_TIME = 0.2;
