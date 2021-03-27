@@ -16,9 +16,8 @@ public enum OperatorButton {
   TURRET_GYRO_LOCK(10),
   CANNON_FIRE(11),
   FILL_SOLENOID(12),
-  FILL_SAFETY(13),
-  REGULATOR_INCREASE(14),
-  REGULATOR_DECREASE(15);
+  REGULATOR_INCREASE(13),
+  REGULATOR_DECREASE(14);
 
   private final int buttonIndex;
 
