@@ -31,7 +31,7 @@ public class TeleOpDriveCommand extends CommandBase {
       fastSound.schedule();
       slowSound.cancel();
       idleSound.cancel();
-    } else if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.25 || Math.abs(xboxController.getX(Hand.kRight)) > 0.34) {
+    } else if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.25 || Math.abs(xboxController.getX(Hand.kRight)) > 0.25) {
       fastSound.cancel();
       slowSound.schedule();
       idleSound.cancel();
