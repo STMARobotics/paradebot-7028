@@ -56,23 +56,22 @@ public final class Constants {
     public static final double WHEEL_DIAMETER_INCHES = 8d;
     public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(WHEEL_DIAMETER_INCHES) * Math.PI;
 
-    public static final double TRACK_WIDTH_METERS = 0.7101550117116572; // TODO track width
+    public static final double TRACK_WIDTH_METERS = 0.9130394010278512;
     public static final DifferentialDriveKinematics DRIVE_KINEMATICS = 
         new DifferentialDriveKinematics(TRACK_WIDTH_METERS);
 
-    // TODO characterization
     /** Voltage needed to overcome the motor’s static friction. kS */
-    public static final double kS = 1.01;
+    public static final double kS = 0.762;
 
     /** Voltage needed to hold (or "cruise") at a given constant velocity. kV */
-    public static final double kV = 2.93;
+    public static final double kV = 1.3;
 
     /** Voltage needed to induce a given acceleration in the motor shaft. kA */
-    public static final double kA = 0.761;
+    public static final double kA = 0.327;
 
     public static final SimpleMotorFeedforward FEED_FORWARD = new SimpleMotorFeedforward(kS, kV, kA);
 
-    public static final double kP = 0.154;
+    public static final double kP = .000136;
     public static final double kI = 0d;
     public static final double kD = 0d;
 
@@ -129,15 +128,15 @@ public final class Constants {
   
   public static final class ArcadeConstants {
     // Max speed to drive in teleop in meters per second
-    public static final double MAX_SPEED_ARCADE = 3.7; // TODO What is true max speed?
+    public static final double MAX_SPEED_ARCADE = 3;
 
     // Max angular velocity in teleop in radians per second
-    public static final double MAX_ANGULAR_VEL_ARCADE = Units.degreesToRadians(360);
+    public static final double MAX_ANGULAR_VEL_ARCADE = Units.degreesToRadians(120);
 
     // Max rate of change for speed per second
     public static final double SPEED_RATE_LIMIT_ARCADE = 2.5;
 
     // Max rate of change for rotation per second
-    public static final double ROTATE_RATE_LIMIT_ARCADE = Math.PI;
+    public static final double ROTATE_RATE_LIMIT_ARCADE = 3;
   }
 }

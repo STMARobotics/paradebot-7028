@@ -25,9 +25,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 public class DriveTrainSubsystem extends SubsystemBase {
@@ -63,16 +65,26 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     leftLeader.setInverted(true);
     leftFollower.setInverted(true);
-    rightLeader.setInverted(true);
-    rightFollower.setInverted(true);
     
-    leftLeader.setNeutralMode(NeutralMode.Brake);
-    leftFollower.setNeutralMode(NeutralMode.Brake);
-    rightLeader.setNeutralMode(NeutralMode.Brake);
-    rightFollower.setNeutralMode(NeutralMode.Brake);
+    leftLeader.setNeutralMode(NeutralMode.Coast);
+    leftFollower.setNeutralMode(NeutralMode.Coast);
+    rightLeader.setNeutralMode(NeutralMode.Coast);
+    rightFollower.setNeutralMode(NeutralMode.Coast);
 
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
+
+    new Trigger(RobotState::isEnabled).whenActive(() -> {
+      leftLeader.setNeutralMode(NeutralMode.Brake);
+      leftFollower.setNeutralMode(NeutralMode.Brake);
+      rightLeader.setNeutralMode(NeutralMode.Brake);
+      rightFollower.setNeutralMode(NeutralMode.Brake);
+    }).whenInactive(() -> {
+      leftLeader.setNeutralMode(NeutralMode.Coast);
+      leftFollower.setNeutralMode(NeutralMode.Coast);
+      rightLeader.setNeutralMode(NeutralMode.Coast);
+      rightFollower.setNeutralMode(NeutralMode.Coast);
+    });
   }
 
   public void arcadeDrive(double speed, double rotation) {
