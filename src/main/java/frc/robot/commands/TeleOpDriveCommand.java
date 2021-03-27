@@ -31,14 +31,14 @@ public class TeleOpDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    driveTrainSubsystem.arcadeDrive(
-        deadbandFilter.calculate(-xboxController.getY(Hand.kLeft)),
-        deadbandFilter.calculate(xboxController.getX(Hand.kRight)));
+    double controllerY = deadbandFilter.calculate(-xboxController.getY(Hand.kLeft));
+    double controllerX = deadbandFilter.calculate(xboxController.getX(Hand.kRight));
+    driveTrainSubsystem.arcadeDrive(controllerY, controllerX);
     if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.6 || Math.abs(xboxController.getX(Hand.kRight)) > 0.5) {
       fastSound.schedule();
       slowSound.cancel();
       idleSound.cancel();
-    } else if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.25 || Math.abs(xboxController.getX(Hand.kRight)) > 0.25) {
+    } else if (controllerX != 0 || controllerY != 0) {
       fastSound.cancel();
       slowSound.schedule();
       idleSound.cancel();

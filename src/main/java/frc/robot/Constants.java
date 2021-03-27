@@ -71,7 +71,7 @@ public final class Constants {
 
     public static final SimpleMotorFeedforward FEED_FORWARD = new SimpleMotorFeedforward(kS, kV, kA);
 
-    public static final double kP = .000136;
+    public static final double kP = 0.1;
     public static final double kI = 0d;
     public static final double kD = 0d;
 
@@ -134,9 +134,9 @@ public final class Constants {
     public static final double MAX_ANGULAR_VEL_ARCADE = Units.degreesToRadians(120);
 
     // Max rate of change for speed per second
-    public static final double SPEED_RATE_LIMIT_ARCADE = 2.5;
+    public static final double SPEED_RATE_LIMIT_ARCADE = 1.75;
 
     // Max rate of change for rotation per second
-    public static final double ROTATE_RATE_LIMIT_ARCADE = 3;
+    public static final double ROTATE_RATE_LIMIT_ARCADE = Units.degreesToRadians(230);
   }
 }

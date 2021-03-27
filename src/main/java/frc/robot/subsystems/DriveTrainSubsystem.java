@@ -28,6 +28,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -74,17 +75,17 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
 
-    new Trigger(RobotState::isEnabled).whenActive(() -> {
+    new Trigger(RobotState::isEnabled).whenActive(new StartEndCommand(() -> {
       leftLeader.setNeutralMode(NeutralMode.Brake);
       leftFollower.setNeutralMode(NeutralMode.Brake);
       rightLeader.setNeutralMode(NeutralMode.Brake);
       rightFollower.setNeutralMode(NeutralMode.Brake);
-    }).whenInactive(() -> {
+    }, () -> {
       leftLeader.setNeutralMode(NeutralMode.Coast);
       leftFollower.setNeutralMode(NeutralMode.Coast);
       rightLeader.setNeutralMode(NeutralMode.Coast);
       rightFollower.setNeutralMode(NeutralMode.Coast);
-    });
+    }));
   }
 
   public void arcadeDrive(double speed, double rotation) {
