@@ -17,7 +17,8 @@ public enum OperatorButton {
   CANNON_FIRE(11),
   FILL_SOLENOID(12),
   REGULATOR_INCREASE(13),
-  REGULATOR_DECREASE(14);
+  REGULATOR_DECREASE(14),
+  COMPRESSOR(15);
 
   private final int buttonIndex;
 

@@ -43,9 +43,8 @@ public final class Constants {
     public static final int DEVICE_ID_BLAST_FORWARD = 0;
     public static final int DEVICE_ID_BLAST_REVERSE = 1;
     public static final double VALVE_OPEN_TIME = 0.2;
-
-    // regulator max and min aren't tuned
-    public static final double PRESSURE_REGULATOR_KP = 0.001;
+    
+    public static final double PRESSURE_REGULATOR_SPEED = 1.0;
   }
 
   public static final class DriveTrainConstants {
@@ -101,11 +100,15 @@ public final class Constants {
     /** Max change in native units per iteration (20ms) */
     public static final double TELEOP_MAX_CHANGE = 20d;
 
+    public static final double TURRET_POWER = 0.4;
+
     public static final double ACT_BOUND_MAX = 2.0;
     public static final double ACT_BOUND_DEAD_MAX = 1.8;
     public static final double ACT_BOUND_CENTER = 1.525;
     public static final double ACT_BOUND_DEAD_MIN = 1.25;
     public static final double ACT_BOUND_MIN = 1.05;
+
+    public static final double ACT_INCREMENT = 0.5;
   }
 
   public static final class NerdShooterConstants {

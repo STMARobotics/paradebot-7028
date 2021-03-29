@@ -1,10 +1,8 @@
 package frc.robot.commands;
 
-import static frc.robot.Constants.TurretConstants.TELEOP_MAX_OUTPUT;
-
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OperatorButton;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class TeleOpTurretCommand extends CommandBase {
@@ -13,29 +11,25 @@ public class TeleOpTurretCommand extends CommandBase {
 
   private final TurretSubsystem turretSubsystem;
 
-  private final XboxController xboxController;
+  private final XboxController cannonController;
 
-  public TeleOpTurretCommand(TurretSubsystem turretSubsystem, XboxController xboxController) {
+  public TeleOpTurretCommand(TurretSubsystem turretSubsystem, XboxController cannonController) {
     this.turretSubsystem = turretSubsystem;
-    this.xboxController = xboxController;
+    this.cannonController = cannonController;
     addRequirements(turretSubsystem);
   }
 
   @Override
   public void execute() {
-    double leftTrigger = xboxController.getTriggerAxis(Hand.kLeft);
-    double rightTrigger = xboxController.getTriggerAxis(Hand.kRight);
-
-    if (leftTrigger > 0.4 || rightTrigger > 0.4) {
+    if (cannonController.getRawButton(OperatorButton.TURRET_LEFT.getButtonIndex())) {
+      turretSubsystem.rotateLeft();
+      rotationSound.schedule();
+    } else if (cannonController.getRawButton(OperatorButton.TURRET_RIGHT.getButtonIndex())) {
+      turretSubsystem.rotateRight();
       rotationSound.schedule();
     } else {
+      turretSubsystem.stopRotation();
       rotationSound.cancel();
-    }
-
-    if (leftTrigger > rightTrigger) {
-      turretSubsystem.rotate(-leftTrigger * TELEOP_MAX_OUTPUT);
-    } else {
-      turretSubsystem.rotate(rightTrigger * TELEOP_MAX_OUTPUT);
     }
   }
 
@@ -46,7 +40,7 @@ public class TeleOpTurretCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.rotate(0);
+    turretSubsystem.stopRotation();;
   }
   
 }

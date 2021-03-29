@@ -26,7 +26,6 @@ import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
-import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.commands.TurretHoldPositionCommand;
 import frc.robot.subsystems.CannonSubsystem;
@@ -63,8 +62,6 @@ public class RobotContainer {
   private final NerdShootCommand rightNerdShootCommand = new NerdShootCommand(rightNerdPusherSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
   private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, cannonController);
-  private final TeleopRegulatorCommand teleopRegulatorCommand = 
-      new TeleopRegulatorCommand(cannonSubsystem, cannonController);
   private final TurretHoldPositionCommand turretHoldPositionCommand = 
       new TurretHoldPositionCommand(turretSubsystem, cannonController);
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
@@ -91,7 +88,6 @@ public class RobotContainer {
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
-    cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
     new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand).whenActive(compressorCommand);
   }
 
@@ -102,6 +98,9 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
+    new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
+
     new JoystickButton(nerdController, OperatorButton.LEFT_REV.getButtonIndex())
         .toggleWhenPressed(leftNerdRevCommand);
     new JoystickButton(nerdController, OperatorButton.LEFT_FIRE.getButtonIndex())
@@ -114,21 +113,25 @@ public class RobotContainer {
 
     new JoystickButton(cannonController, OperatorButton.CANNON_FIRE.getButtonIndex())
         .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
-
-    new JoystickButton(driverController, XboxController.Button.kY.value).toggleWhenPressed(compressorCommand);
-
-    new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
-    new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
     new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
         .whileHeld(cannonSubsystem::openBlastTank, cannonSubsystem);
     new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
         .whenReleased(cannonSubsystem::closeBlastTank, cannonSubsystem);
-    
-    new JoystickButton(cannonController, XboxController.Button.kBumperRight.value)
-        .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
-    new JoystickButton(cannonController, XboxController.Button.kBumperLeft.value)
-        .whenPressed(turretSubsystem::lowerCannonToMin, turretSubsystem);
-    new JoystickButton(cannonController, XboxController.Button.kY.value)
+
+    new JoystickButton(driverController, OperatorButton.COMPRESSOR.getButtonIndex())
+        .toggleWhenPressed(compressorCommand);
+
+    new JoystickButton(cannonController, OperatorButton.REGULATOR_DECREASE.getButtonIndex())
+        .whileHeld(cannonSubsystem::decreaseRegulator, cannonSubsystem);
+    new JoystickButton(cannonController, OperatorButton.REGULATOR_INCREASE.getButtonIndex())
+        .whileHeld(cannonSubsystem::increaseRegulator, cannonSubsystem);
+
+    new JoystickButton(cannonController, OperatorButton.TURRET_UP.getButtonIndex())
+        .whenPressed(turretSubsystem::raiseCannonStep, turretSubsystem);
+    new JoystickButton(cannonController, OperatorButton.TURRET_DOWN.getButtonIndex())
+        .whenPressed(turretSubsystem::lowerCannonStep, turretSubsystem);
+        
+    new JoystickButton(cannonController, OperatorButton.TURRET_GYRO_LOCK.getButtonIndex())
         .toggleWhenPressed(turretHoldPositionCommand);
   }
 

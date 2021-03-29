@@ -5,9 +5,8 @@ import static frc.robot.Constants.CannonConstants.DEVICE_ID_BLAST_REVERSE;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_CANNON_VALVE;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_PRESSURE_REGULATOR;
 import static frc.robot.Constants.CannonConstants.DEVICE_ID_PRESSURE_SENSOR;
-import static frc.robot.Constants.CannonConstants.PRESSURE_REGULATOR_KP;
+import static frc.robot.Constants.CannonConstants.PRESSURE_REGULATOR_SPEED;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -28,11 +27,11 @@ public class CannonSubsystem extends SubsystemBase {
   public CannonSubsystem() {
     TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
     talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-    talonConfig.slot0.kP = PRESSURE_REGULATOR_KP;
 
     pressureRegulator.configFactoryDefault();
     pressureRegulator.configAllSettings(talonConfig);
   }
+
   public void openValve() {
     valve.set(1);
   }
@@ -49,12 +48,12 @@ public class CannonSubsystem extends SubsystemBase {
     blastSolenoid.set(Value.kReverse);
   }
 
-  public void setPressureRegulatorPosition(double target) {
-    pressureRegulator.set(ControlMode.Position, target);
+  public void increaseRegulator() {
+    pressureRegulator.set(PRESSURE_REGULATOR_SPEED);
   }
 
-  public void setPressureRegulatorPower(double power) {
-    pressureRegulator.set(ControlMode.PercentOutput, power);
+  public void decreaseRegulator() {
+    pressureRegulator.set(-PRESSURE_REGULATOR_SPEED);
   }
 
   public double getPressure() {
