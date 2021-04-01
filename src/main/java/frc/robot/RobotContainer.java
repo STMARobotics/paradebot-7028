@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CompressorCommand;
@@ -88,7 +89,7 @@ public class RobotContainer {
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
-    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand).whenActive(compressorCommand);
+    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand);
   }
 
   /**
@@ -112,14 +113,16 @@ public class RobotContainer {
         .whileHeld(rightNerdShootCommand);
 
     new JoystickButton(cannonController, OperatorButton.CANNON_FIRE.getButtonIndex())
-        .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
+        .whenPressed(shotAudioCommand)
+        .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
     new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
-        .whileHeld(cannonSubsystem::openBlastTank, cannonSubsystem);
+        .whenHeld(new RunCommand(cannonSubsystem::openBlastTank, cannonSubsystem));
     new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
         .whenReleased(cannonSubsystem::closeBlastTank, cannonSubsystem);
 
-    new JoystickButton(driverController, OperatorButton.COMPRESSOR.getButtonIndex())
-        .toggleWhenPressed(compressorCommand);
+    var compressorSwitch = new JoystickButton(cannonController, OperatorButton.COMPRESSOR.getButtonIndex());
+    new Trigger(RobotState::isEnabled).and(compressorSwitch.negate()).whenActive(compressorCommand);
+    compressorSwitch.cancelWhenActive(compressorCommand);
 
     new JoystickButton(cannonController, OperatorButton.REGULATOR_DECREASE.getButtonIndex())
         .whileHeld(cannonSubsystem::decreaseRegulator, cannonSubsystem);

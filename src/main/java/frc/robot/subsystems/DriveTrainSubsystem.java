@@ -85,7 +85,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
       leftFollower.setNeutralMode(NeutralMode.Coast);
       rightLeader.setNeutralMode(NeutralMode.Coast);
       rightFollower.setNeutralMode(NeutralMode.Coast);
-    }));
+    }, this));
   }
 
   public void arcadeDrive(double speed, double rotation) {

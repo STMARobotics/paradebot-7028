@@ -13,8 +13,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.PressureSensor;
 
 public class CannonSubsystem extends SubsystemBase {
@@ -30,6 +32,10 @@ public class CannonSubsystem extends SubsystemBase {
 
     pressureRegulator.configFactoryDefault();
     pressureRegulator.configAllSettings(talonConfig);
+    
+    new Trigger(RobotState::isEnabled)
+        .whenActive(this::closeBlastTank, this)
+        .whenActive(this::closeValve, this);
   }
 
   public void openValve() {
