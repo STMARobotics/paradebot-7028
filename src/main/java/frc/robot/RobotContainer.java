@@ -5,8 +5,9 @@
 package frc.robot;
 
 import static frc.robot.Constants.CannonConstants.VALVE_OPEN_TIME;
+import static frc.robot.Constants.ControllerConstants.DEVICE_ID_CANNON_CONTROLLER;
 import static frc.robot.Constants.ControllerConstants.DEVICE_ID_DRIVER_CONTROLLER;
-import static frc.robot.Constants.ControllerConstants.DEVICE_ID_OPERATOR_CONTROLLER;
+import static frc.robot.Constants.ControllerConstants.DEVICE_ID_NERD_CONTROLLER;
 
 import java.util.Map;
 
@@ -16,21 +17,23 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CompressorCommand;
+import frc.robot.commands.NerdRevCommand;
 import frc.robot.commands.NerdShootCommand;
 import frc.robot.commands.PlaySoundOnceCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TeleOpDriveCommand;
 import frc.robot.commands.TeleOpTurretCommand;
-import frc.robot.commands.TeleopRegulatorCommand;
 import frc.robot.commands.ToggleAudioCommand;
 import frc.robot.commands.TurretHoldPositionCommand;
 import frc.robot.subsystems.CannonSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.NerdShooterSubsystem;
+import frc.robot.subsystems.NerdFlywheelSubsystem;
+import frc.robot.subsystems.NerdPusherSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -42,22 +45,26 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class RobotContainer {
   private final XboxController driverController = new XboxController(DEVICE_ID_DRIVER_CONTROLLER);
-  private final XboxController operatorController = new XboxController(DEVICE_ID_OPERATOR_CONTROLLER);
+  private final XboxController cannonController = new XboxController(DEVICE_ID_CANNON_CONTROLLER);
+  private final XboxController nerdController = new XboxController(DEVICE_ID_NERD_CONTROLLER);
   
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   private final CannonSubsystem cannonSubsystem = new CannonSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
-  private final NerdShooterSubsystem leftNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.LEFT);
-  private final NerdShooterSubsystem rightNerdShooterSubsystem = new NerdShooterSubsystem(NerdShooter.RIGHT);
+  private final NerdFlywheelSubsystem leftNerdFlywheelSubsystem = new NerdFlywheelSubsystem(NerdFlywheel.LEFT);
+  private final NerdFlywheelSubsystem rightNerdFlywheelSubsystem = new NerdFlywheelSubsystem(NerdFlywheel.RIGHT);
+  private final NerdPusherSubsystem leftNerdPusherSubsystem = new NerdPusherSubsystem(NerdPusher.LEFT);
+  private final NerdPusherSubsystem rightNerdPusherSubsystem = new NerdPusherSubsystem(NerdPusher.RIGHT);
   private final CompressorSubsystem compressorSubsystem = new CompressorSubsystem();
 
-  private final NerdShootCommand nerdShootCommand = new NerdShootCommand(leftNerdShooterSubsystem);
+  private final NerdRevCommand leftNerdRevCommand = new NerdRevCommand(leftNerdFlywheelSubsystem);
+  private final NerdRevCommand rightNerdRevCommand = new NerdRevCommand(rightNerdFlywheelSubsystem);
+  private final NerdShootCommand leftNerdShootCommand = new NerdShootCommand(leftNerdPusherSubsystem);
+  private final NerdShootCommand rightNerdShootCommand = new NerdShootCommand(rightNerdPusherSubsystem);
   private final TeleOpDriveCommand teleOpDriveCommand = new TeleOpDriveCommand(driveTrainSubsystem, driverController);
-  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, operatorController);
-  private final TeleopRegulatorCommand teleopRegulatorCommand = 
-      new TeleopRegulatorCommand(cannonSubsystem, operatorController);
+  private final TeleOpTurretCommand teleOpTurretCommand = new TeleOpTurretCommand(turretSubsystem, cannonController);
   private final TurretHoldPositionCommand turretHoldPositionCommand = 
-      new TurretHoldPositionCommand(turretSubsystem, operatorController);
+      new TurretHoldPositionCommand(turretSubsystem, cannonController);
   private final ToggleAudioCommand toggleAudioCommand = new ToggleAudioCommand();
   private final PlaySoundOnceCommand promoAudioCommand = new PlaySoundOnceCommand("promotion");
   private final PlaySoundOnceCommand shotAudioCommand = new PlaySoundOnceCommand("shot");
@@ -82,8 +89,7 @@ public class RobotContainer {
 
     driveTrainSubsystem.setDefaultCommand(teleOpDriveCommand);
     turretSubsystem.setDefaultCommand(teleOpTurretCommand);
-    cannonSubsystem.setDefaultCommand(teleopRegulatorCommand);
-    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand).whenActive(compressorCommand);
+    new Trigger(RobotState::isEnabled).whenActive(toggleAudioCommand);
   }
 
   /**
@@ -93,28 +99,42 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // whileHeld for Full Auto
-    // whenPressed for Semi Auto
-    new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whenPressed(() -> nerdShootCommand.schedule());
-
-    new JoystickButton(driverController, XboxController.Button.kA.value)
-        .whenPressed(shotAudioCommand.alongWith(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME)));
-
-    new JoystickButton(driverController, XboxController.Button.kY.value).toggleWhenPressed(compressorCommand);
-
     new JoystickButton(driverController, XboxController.Button.kBack.value).toggleWhenPressed(toggleAudioCommand);
     new JoystickButton(driverController, XboxController.Button.kStart.value).whenPressed(promoAudioCommand);
-    new JoystickButton(driverController, XboxController.Button.kX.value)
-        .whenPressed(cannonSubsystem::openBlastTank, cannonSubsystem);
-    new JoystickButton(driverController, XboxController.Button.kB.value)
-        .whenPressed(cannonSubsystem::closeBlastTank, cannonSubsystem);
-    
-    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value)
-        .whenPressed(turretSubsystem::raiseCannonToMax, turretSubsystem);
-    new JoystickButton(operatorController, XboxController.Button.kBumperLeft.value)
-        .whenPressed(turretSubsystem::lowerCannonToMin, turretSubsystem);
-    new JoystickButton(operatorController, XboxController.Button.kY.value)
+
+    new JoystickButton(nerdController, OperatorButton.LEFT_REV.getButtonIndex())
+        .toggleWhenPressed(leftNerdRevCommand);
+    new JoystickButton(nerdController, OperatorButton.LEFT_FIRE.getButtonIndex())
+        .whileHeld(leftNerdShootCommand);
+
+    new JoystickButton(nerdController, OperatorButton.RIGHT_REV.getButtonIndex())
+        .toggleWhenPressed(rightNerdRevCommand);
+    new JoystickButton(nerdController, OperatorButton.RIGHT_FIRE.getButtonIndex())
+        .whileHeld(rightNerdShootCommand);
+
+    new JoystickButton(cannonController, OperatorButton.CANNON_FIRE.getButtonIndex())
+        .whenPressed(shotAudioCommand)
+        .whenPressed(new ShootCommand(cannonSubsystem).withTimeout(VALVE_OPEN_TIME));
+    new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
+        .whenHeld(new RunCommand(cannonSubsystem::openBlastTank, cannonSubsystem));
+    new JoystickButton(cannonController, OperatorButton.FILL_SOLENOID.getButtonIndex())
+        .whenReleased(cannonSubsystem::closeBlastTank, cannonSubsystem);
+
+    var compressorSwitch = new JoystickButton(cannonController, OperatorButton.COMPRESSOR.getButtonIndex());
+    new Trigger(RobotState::isEnabled).and(compressorSwitch.negate()).whenActive(compressorCommand);
+    compressorSwitch.cancelWhenActive(compressorCommand);
+
+    new JoystickButton(cannonController, OperatorButton.REGULATOR_DECREASE.getButtonIndex())
+        .whileHeld(cannonSubsystem::decreaseRegulator, cannonSubsystem);
+    new JoystickButton(cannonController, OperatorButton.REGULATOR_INCREASE.getButtonIndex())
+        .whileHeld(cannonSubsystem::increaseRegulator, cannonSubsystem);
+
+    new JoystickButton(cannonController, OperatorButton.TURRET_UP.getButtonIndex())
+        .whenPressed(turretSubsystem::raiseCannonStep, turretSubsystem);
+    new JoystickButton(cannonController, OperatorButton.TURRET_DOWN.getButtonIndex())
+        .whenPressed(turretSubsystem::lowerCannonStep, turretSubsystem);
+        
+    new JoystickButton(cannonController, OperatorButton.TURRET_GYRO_LOCK.getButtonIndex())
         .toggleWhenPressed(turretHoldPositionCommand);
   }
 
