@@ -100,7 +100,7 @@ public final class Constants {
     /** Max change in native units per iteration (20ms) */
     public static final double TELEOP_MAX_CHANGE = 20d;
 
-    public static final double TURRET_POWER = 0.4;
+    public static final double TURRET_POWER = 0.2;
 
     public static final double ACT_BOUND_MAX = 2.0;
     public static final double ACT_BOUND_DEAD_MAX = 1.8;
@@ -127,7 +127,7 @@ public final class Constants {
      */
     // public static final double PUSHER_CYCLE_TIME = 0.3;
     public static final double PUSHER_OUT_TIME = 0.05;
-    public static final double PUSHER_FULL_CYCLE_TIME = 0.13;
+    public static final double PUSHER_FULL_CYCLE_TIME = 0.3;
   }
 
   public static final class AudioConstants {
