@@ -122,10 +122,6 @@ public final class Constants {
 
     public static final double FLYWHEEL_POWER = 0.4;
 
-    /**
-     * time it takes pusher to go out, then in
-     */
-    // public static final double PUSHER_CYCLE_TIME = 0.3;
     public static final double PUSHER_OUT_TIME = 0.05;
     public static final double PUSHER_FULL_CYCLE_TIME = 0.3;
   }
