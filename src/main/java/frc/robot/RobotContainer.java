@@ -125,9 +125,11 @@ public class RobotContainer {
     compressorSwitch.cancelWhenActive(compressorCommand);
 
     new JoystickButton(cannonController, OperatorButton.REGULATOR_DECREASE.getButtonIndex())
-        .whileHeld(cannonSubsystem::decreaseRegulator, cannonSubsystem);
+        .whileHeld(cannonSubsystem::decreaseRegulator, cannonSubsystem)
+        .whenReleased(cannonSubsystem::stopRegulator, cannonSubsystem);
     new JoystickButton(cannonController, OperatorButton.REGULATOR_INCREASE.getButtonIndex())
-        .whileHeld(cannonSubsystem::increaseRegulator, cannonSubsystem);
+        .whileHeld(cannonSubsystem::increaseRegulator, cannonSubsystem)
+        .whenReleased(cannonSubsystem::stopRegulator, cannonSubsystem);
 
     new JoystickButton(cannonController, OperatorButton.TURRET_UP.getButtonIndex())
         .whenPressed(turretSubsystem::raiseCannonStep, turretSubsystem);

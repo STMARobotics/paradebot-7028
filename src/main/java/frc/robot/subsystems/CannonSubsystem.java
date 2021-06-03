@@ -62,6 +62,10 @@ public class CannonSubsystem extends SubsystemBase {
     pressureRegulator.set(-PRESSURE_REGULATOR_SPEED);
   }
 
+  public void stopRegulator() {
+    pressureRegulator.set(0);
+  }
+
   public double getPressure() {
     return pressureSensor.getPressure();
   }
