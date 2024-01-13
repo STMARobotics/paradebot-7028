@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OperatorButton;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class TeleOpTurretCommand extends CommandBase {
+public class TeleOpTurretCommand extends Command {
 
   private PlaySoundContinuousCommand rotationSound = new PlaySoundContinuousCommand("rotation");
 

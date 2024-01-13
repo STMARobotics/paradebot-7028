@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.NerdFlywheelSubsystem;
 
-public class NerdRevCommand extends CommandBase {
+public class NerdRevCommand extends Command {
   
   private final NerdFlywheelSubsystem nerdFlywheelSubsystem;
 

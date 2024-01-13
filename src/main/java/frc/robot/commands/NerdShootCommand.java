@@ -4,10 +4,10 @@ import static frc.robot.Constants.NerdShooterConstants.PUSHER_FULL_CYCLE_TIME;
 import static frc.robot.Constants.NerdShooterConstants.PUSHER_OUT_TIME;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.NerdPusherSubsystem;
 
-public class NerdShootCommand extends CommandBase {
+public class NerdShootCommand extends Command {
 
   private final NerdPusherSubsystem nerdPusherSubsystem;
   private Timer timer = new Timer();

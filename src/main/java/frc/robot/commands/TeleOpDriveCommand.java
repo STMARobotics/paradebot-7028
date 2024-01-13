@@ -3,13 +3,12 @@ package frc.robot.commands;
 import static frc.robot.Constants.DriverConstants.DEADBAND_HIGH;
 import static frc.robot.Constants.DriverConstants.DEADBAND_LOW;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.DeadbandFilter;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TeleOpDriveCommand extends CommandBase {
+public class TeleOpDriveCommand extends Command {
 
   private final DriveTrainSubsystem driveTrainSubsystem;
   private final XboxController xboxController;
@@ -31,10 +30,10 @@ public class TeleOpDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double controllerY = deadbandFilter.calculate(-xboxController.getY(Hand.kLeft));
-    double controllerX = deadbandFilter.calculate(xboxController.getX(Hand.kRight));
+    double controllerY = deadbandFilter.calculate(-xboxController.getLeftY());
+    double controllerX = deadbandFilter.calculate(xboxController.getRightX());
     driveTrainSubsystem.arcadeDrive(controllerY, controllerX);
-    if (Math.abs(xboxController.getY(Hand.kLeft)) > 0.6 || Math.abs(xboxController.getX(Hand.kRight)) > 0.5) {
+    if (Math.abs(xboxController.getLeftY()) > 0.6 || Math.abs(xboxController.getRightX()) > 0.5) {
       fastSound.schedule();
       slowSound.cancel();
       idleSound.cancel();

@@ -49,8 +49,8 @@ public class TurretSubsystem extends SubsystemBase {
     turret.setNeutralMode(NeutralMode.Brake);
     turret.configClosedLoopPeakOutput(0, CLOSED_LOOP_MAX_OUTPUT);
 
-    actuatorOne.setBounds(ACT_BOUND_MAX, ACT_BOUND_DEAD_MAX, ACT_BOUND_CENTER, ACT_BOUND_DEAD_MIN, ACT_BOUND_MIN);
-    actuatorTwo.setBounds(ACT_BOUND_MAX, ACT_BOUND_DEAD_MAX, ACT_BOUND_CENTER, ACT_BOUND_DEAD_MIN, ACT_BOUND_MIN);
+    actuatorOne.setBoundsMicroseconds (ACT_BOUND_MAX, ACT_BOUND_DEAD_MAX, ACT_BOUND_CENTER, ACT_BOUND_DEAD_MIN, ACT_BOUND_MIN);
+    actuatorTwo.setBoundsMicroseconds(ACT_BOUND_MAX, ACT_BOUND_DEAD_MAX, ACT_BOUND_CENTER, ACT_BOUND_DEAD_MIN, ACT_BOUND_MIN);
 
     currentPosition = 0.0;
   }

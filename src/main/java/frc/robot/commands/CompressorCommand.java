@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CompressorSubsystem;
 
-public class CompressorCommand extends CommandBase {
+public class CompressorCommand extends Command {
 
   private final CompressorSubsystem compressorSubsystem;
 

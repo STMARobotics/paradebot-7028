@@ -4,9 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -102,13 +102,13 @@ public final class Constants {
 
     public static final double TURRET_POWER = 0.2;
 
-    public static final double ACT_BOUND_MAX = 2.0;
-    public static final double ACT_BOUND_DEAD_MAX = 1.8;
-    public static final double ACT_BOUND_CENTER = 1.525;
-    public static final double ACT_BOUND_DEAD_MIN = 1.25;
-    public static final double ACT_BOUND_MIN = 1.05;
+    public static final int ACT_BOUND_MAX = 2000;
+    public static final int ACT_BOUND_DEAD_MAX = 1800;
+    public static final int ACT_BOUND_CENTER = 1525;
+    public static final int ACT_BOUND_DEAD_MIN = 1250;
+    public static final int ACT_BOUND_MIN = 1050;
 
-    public static final double ACT_INCREMENT = 0.5;
+    public static final int ACT_INCREMENT = 500;
   }
 
   public static final class NerdShooterConstants {

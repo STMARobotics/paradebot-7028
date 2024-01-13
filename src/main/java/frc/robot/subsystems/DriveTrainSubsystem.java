@@ -25,13 +25,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotState;
-import edu.wpi.first.wpilibj.SlewRateLimiter;
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpiutil.math.MathUtil;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   
@@ -75,7 +75,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
 
-    new Trigger(RobotState::isEnabled).whenActive(new StartEndCommand(() -> {
+    new Trigger(RobotState::isEnabled).onTrue(new StartEndCommand(() -> {
       leftLeader.setNeutralMode(NeutralMode.Brake);
       leftFollower.setNeutralMode(NeutralMode.Brake);
       rightLeader.setNeutralMode(NeutralMode.Brake);
