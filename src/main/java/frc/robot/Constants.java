@@ -113,12 +113,12 @@ public final class Constants {
 
   public static final class NerdShooterConstants {
     public static final int DEVICE_ID_LEFT_FLYWHEEL = 6;
-    public static final int DEVICE_ID_LEFT_PUSHER_FORWARD = 2;
-    public static final int DEVICE_ID_LEFT_PUSHER_REVERSE = 3;
+    public static final int DEVICE_ID_LEFT_PUSHER_FORWARD = 5;
+    public static final int DEVICE_ID_LEFT_PUSHER_REVERSE = 4;
 
     public static final int DEVICE_ID_RIGHT_FLYWHEEL = 7;
-    public static final int DEVICE_ID_RIGHT_PUSHER_FORWARD = 4;
-    public static final int DEVICE_ID_RIGHT_PUSHER_REVERSE = 5;
+    public static final int DEVICE_ID_RIGHT_PUSHER_FORWARD = 3;
+    public static final int DEVICE_ID_RIGHT_PUSHER_REVERSE = 2;
 
     public static final double FLYWHEEL_POWER = 0.4;
 
